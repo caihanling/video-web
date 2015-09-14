@@ -8,18 +8,17 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class MybatisUtils {
+
 	private static SqlSessionFactory sqlSessionFactory = null;
+
 	static {
-		String resource = "mybatis-conf.xml";
-		InputStream inputStream;
-		try {
-			inputStream = Resources.getResourceAsStream(resource);
+		try (InputStream inputStream = Resources.getResourceAsStream("mybatis-conf.xml");) {
 			sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static SqlSessionFactory getSessionFactory() {
 		return sqlSessionFactory;
 	}

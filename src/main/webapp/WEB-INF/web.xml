@@ -3,12 +3,6 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
 
-	<!-- <display-name>hu bing video</display-name> -->
-
-	<!-- <welcome-file-list> -->
-	<!-- <welcome-file>index.html</welcome-file> -->
-	<!-- </welcome-file-list> -->
-
 	<servlet>
 		<servlet-name>detailServlet</servlet-name>
 		<servlet-class>zx.soft.video.servlet.DetailServlet</servlet-class>
@@ -18,8 +12,6 @@
 		<url-pattern>/pages/servlet</url-pattern>
 	</servlet-mapping>
 
-
-
 	<servlet>
 		<servlet-name>updateServlet</servlet-name>
 		<servlet-class>zx.soft.video.servlet.UpdateServlet</servlet-class>
@@ -28,7 +20,6 @@
 		<servlet-name>updateServlet</servlet-name>
 		<url-pattern>/pages/updateServlet</url-pattern>
 	</servlet-mapping>
-
 
 	<servlet>
 		<servlet-name>loginServlet</servlet-name>
@@ -47,7 +38,5 @@
 		<servlet-name>deleteDetailServlet</servlet-name>
 		<url-pattern>/pages/deleteDetailServlet</url-pattern>
 	</servlet-mapping>
-
-
 
 </web-app>

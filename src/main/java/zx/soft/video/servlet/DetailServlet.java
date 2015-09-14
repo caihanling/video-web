@@ -17,15 +17,14 @@ public class DetailServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				  List<Details> list = new DetailDao().getDetails();
-				  request.setAttribute("list", list);
-				  request.getRequestDispatcher("table.jsp").forward(request, response);
+		List<Details> list = new DetailDao().getDetails();
+		request.setAttribute("list", list);
+		request.getRequestDispatcher("table.jsp").forward(request, response);
 	}
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-	
 
 }

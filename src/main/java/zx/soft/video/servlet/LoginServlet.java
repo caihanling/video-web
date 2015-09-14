@@ -11,22 +11,20 @@ import javax.servlet.http.HttpSession;
 import zx.soft.video.Impl.UserDao;
 import zx.soft.video.model.Users;
 
-
-
 public class LoginServlet extends HttpServlet {
-	
+
+	private static final long serialVersionUID = 119906727513793149L;
+
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Users users = new Users();
 		users.setUname(request.getParameter("uname").toString());
 		users.setUpass(request.getParameter("upass").toString());
-		System.out.println(users.getUname());
-		System.out.println(users.getUpass());
-		if((new UserDao().login(users)) == null){
-			//fail
+		if ((new UserDao().login(users)) == null) {
+			// fail
 			response.sendRedirect("login.jsp");
-		}else{
-			//sucess
+		} else {
+			// sucess
 			HttpSession session = request.getSession(false);
 			session.setAttribute("uname", users.getUname());
 			response.sendRedirect("servlet");
