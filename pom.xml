@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>zx.soft</groupId>
 		<artifactId>common-parent</artifactId>
-		<version>1.0.0</version>
+		<version>2.0.2</version>
 	</parent>
 
 	<groupId>info.hb</groupId>
@@ -19,6 +19,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- 工具包 -->
+		<dependency>
+			<groupId>zx.soft</groupId>
+			<artifactId>common-utils</artifactId>
+			<version>2.0.0</version>
+		</dependency>
 		<!-- 日志包 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -58,21 +64,18 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
 			<scope>provided</scope>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>2.2</version>
 			<scope>provided</scope>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
 		</dependency>
 	</dependencies>
 
