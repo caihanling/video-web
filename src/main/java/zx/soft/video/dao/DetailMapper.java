@@ -14,10 +14,10 @@ public interface DetailMapper {
 	public List<Details> getDetails();
 	
 	/**
-	 * 更新描述
+	 * 更新描述,作者，更新次数
 	 * @param details
 	 */
-	@Update("UPDATE  `Detail` SET  `describe` = #{describe} WHERE did = #{did}")
+	@Update("UPDATE `Detail` SET `describe`= #{describe},`times`= times+1,`uname`= #{uname} WHERE did = #{did}")
 	public void updateDescribe(Details details);
 
 	/**

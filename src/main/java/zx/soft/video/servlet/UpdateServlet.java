@@ -20,11 +20,11 @@ public class UpdateServlet extends HttpServlet {
 		Details detail = new Details();
 		detail.setDid(Integer.parseInt(request.getParameter("did").toString()));
 		detail.setDescribe(request.getParameter("describe").toString());
+		detail.setUname(request.getParameter("uname").toString());
 		new DetailDao().updateDescribe(detail);
+//		new DetailServlet().doGet(request, response);
+		response.sendRedirect("servlet");
 
-		List<Details> list = new DetailDao().getDetails();
-		request.setAttribute("list", list);
-		request.getRequestDispatcher("table.jsp").forward(request, response);
 	}
 
 	@Override

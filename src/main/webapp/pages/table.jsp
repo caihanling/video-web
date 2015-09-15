@@ -83,17 +83,24 @@
 
 		<ul class="nav navbar-top-links navbar-right">
 
-			<li class="dropdown"><a class="dropdown-toggle"
-				data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
-					<i class="fa fa-caret-down"></i>
-			</a>
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#" onclick="demo()"> 
+				<i class="fa fa-tasks fa-fw"></i>
+				<i class="fa fa-caret-down"></i>
+				</a>
+			</li>
+				
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#"> 
+				<i class="fa fa-user fa-fw"></i>
+				<i class="fa fa-caret-down"></i>
+				</a>
 				<ul class="dropdown-menu dropdown-user">
 					<li><a href="#"><i class="fa fa-user fa-fw"></i> ${uname }</a></li>
 					<li class="divider"></li>
-					<li><a href="login.jsp"><i class="fa fa-sign-out fa-fw"></i>
-							Logout</a></li>
+					<li><a href="login.jsp"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
 				</ul> <!-- /.dropdown-user --></li>
-			<!-- /.dropdown -->
+
 		</ul>
 		<!-- /.navbar-top-links --> </nav>
 
@@ -125,9 +132,11 @@
 									</thead>
 									<tbody>
 										<c:forEach items="${list}" var="detail">
+										<c:if test="${detail.times < 4 }">
 											<tr>
 												<td align="center">${detail.did}</td>
-												<td><a id="imgClick" href="#"> <img src="${detail.image}" id="imageresource" width="70px"
+												<td><a id="imgClick" href="#"> <img
+														src="${detail.image}" id="imageresource" width="70px"
 														height="70px" onclick="imagePreview(this)">
 												</a></td>
 												<c:if test="${detail.times==1 }">
@@ -140,13 +149,17 @@
 													<td><span style="background-color: #f0ad4e">${detail.describe}</span></td>
 												</c:if>
 												<td align="center" style="padding-top: 2%">${detail.uname}</td>
-												<td align="center" style="padding-top: 2%">
-												<a href="#" class="btn btn-info btn-xs" data-toggle="modal" data-target="#basicModal" onclick="update(this);">
-												 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Update</a> 
-												<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteObj(this);">
-												 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>delete</a>
-												</td>
+												<td align="center" style="padding-top: 2%"><a href="#"
+													class="btn btn-info btn-xs" data-toggle="modal"
+													data-target="#basicModal" onclick="update(this);"> <span
+														class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Update
+												</a> <a href="#" class="btn btn-danger btn-xs"
+													data-toggle="modal" data-target="#deleteModal"
+													onclick="deleteObj(this);"> <span
+														class="glyphicon glyphicon-remove" aria-hidden="true"></span>delete
+												</a></td>
 											</tr>
+										</c:if>
 										</c:forEach>
 									</tbody>
 								</table>
@@ -156,8 +169,35 @@
 						</div>
 
 					</div>
+					
+					<!--demoShow Modal begin -->
+					<div id="demoShow" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="demoShow">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<table class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th width="30%">picture</th>
+												<th width="70%">describe</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><img src="img/1.jpg" width="150px"
+													height="210px"></td>
+												<td><textarea class="form-control" rows="10" disabled="disabled">
+												第一次描述：aaaaaaaa；第二次描述：bbbbbbbbbbbb；第三次描述：ccccccccccc</textarea></td>
+											</tr>
+										</tbody>
+									</table>
+								<div class="modal-footer">
+									<a href="#" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</a>
+								</div>
+							</div>
+						</div>
+					</div>
 
-				
+
 					<!-- image Modal begin -->
 					<div id="imagemodal" class="modal fade" id="myModal" tabindex="-1"
 						role="dialog" aria-labelledby="myModalLabel">
@@ -179,22 +219,24 @@
 						</div>
 					</div>
 
-				<!--delete Modal begin -->
-                <div id="delete" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="deleteModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <h3>确定要删除嘛...?</h3>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="#" class="btn btn-primary" name='yes'>Yes</a>
-								<a href="#" class="btn" data-dismiss="modal" aria-hidden="true">No</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+					<!--delete Modal begin -->
+					<div id="delete" class="modal fade" tabindex="-1" role="dialog"
+						aria-labelledby="deleteModal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-body">
+									<h3>确定要删除嘛...?</h3>
+								</div>
+								<div class="modal-footer">
+									<a href="#" class="btn btn-primary" name='yes'>Yes</a> <a
+										href="#" class="btn" data-dismiss="modal" aria-hidden="true">No</a>
+								</div>
+							</div>
+						</div>
+					</div>
 					<!--table modal begin -->
-					<div class="modal fade" id="tableModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+					<div class="modal fade" id="tableModal" tabindex="-1" role="dialog"
+						aria-labelledby="basicModal" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -217,15 +259,15 @@
 													disabled="" name="did"></td>
 												<td><img src="" id="imageshow" width="70px"
 													height="70px"></td>
-												<td><input type="text" id="describe"
-													class="form-control" name="describe"></td>
+												<td><textarea class="form-control" id="describe" name="describe" rows="3"></textarea>
+												</td>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 								<div class="modal-footer">
-									<a href="#" class="btn btn-primary" name='save'>Ok</a>
-									<a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</a>
+									<a href="#" class="btn btn-primary" name='save'>Ok</a> <a
+										href="#" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</a>
 								</div>
 							</div>
 						</div>
@@ -278,14 +320,17 @@
 
 		});
 
-// 		$("#imgClick").on("click", function() {
-// 			console.log("111");
-// 			$('#imagepreview').attr('src', $('#imageresource').attr('src'));
-// 			$('#imagemodal').modal('show');
-// 		});
+		// 		$("#imgClick").on("click", function() {
+		// 			console.log("111");
+		// 			$('#imagepreview').attr('src', $('#imageresource').attr('src'));
+		// 			$('#imagemodal').modal('show');
+		// 		});
+
+		function demo(){
+			$('#demoShow').modal('show');
+		}
 		
-		function imagePreview(){
-			console.log("111");
+		function imagePreview() {
 			$('#imagepreview').attr('src', $('#imageresource').attr('src'));
 			$('#imagemodal').modal('show');
 		}
@@ -299,9 +344,10 @@
 
 			$("a[name='save']").click(
 					function() {
-						var did = $(this).parents("#tableModal").find( "input[name='did']").val();
-						var describe = $(this).parents("#tableModal").find( "input[name='describe']").val();
-						window.location = "updateServlet?describe=" + describe + "&did=" + did;
+						var did = $(this).parents("#tableModal").find("input[name='did']").val();
+						var describe = $(this).parents("#tableModal").find("textarea[name='describe']").val();
+						var uname = "<%=session.getAttribute("uname")%>";
+						window.location = "updateServlet?did=" + did + "&describe=" + describe + "&uname=" + uname;
 						$("#tableModal").modal("hide");
 					});
 
@@ -311,11 +357,10 @@
 			var tds = $(obj).parent().parent().find('td');
 			var did = tds.eq(0).text();
 			$('#delete').modal('show');
-			
-			$("a[name='yes']").click(
-				function() {
-					console.log(did);
-					window.location = "deleteDetailServlet?did=" + did;
+
+			$("a[name='yes']").click(function() {
+				console.log(did);
+				window.location = "deleteDetailServlet?did=" + did;
 			});
 		}
 	</script>
