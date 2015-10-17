@@ -19,6 +19,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- 样本库Dao包 -->
+		<dependency>
+			<groupId>info.hb</groupId>
+			<artifactId>video-text-sample</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<!-- 工具包 -->
 		<dependency>
 			<groupId>zx.soft</groupId>
