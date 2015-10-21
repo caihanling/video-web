@@ -7,48 +7,30 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import com.googlecode.objectify.impl.Session;
 
 import info.hb.video.sample.core.dao.FrameSample;
 import info.hb.video.sample.core.domain.FrameTextSample;
 import info.ub.video.sample.core.common.MybatisConfig;
-import zx.soft.video.Impl.DetailDao;
-import zx.soft.video.model.Details;
-import zx.soft.video.model.Users;
 
-public class DetailServlet extends HttpServlet {
-
-	private static final long serialVersionUID = -6718499963140222139L;
+public class FindByNameServlet extends HttpServlet{
+	
 	FrameSample frameSample = new FrameSample(MybatisConfig.ServerEnum.video);
-	int totalcount = 0;
 	int pageindex = 1;
-
-	@Override
+	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		List<Details> list = new DetailDao().getDetails();
-		
-		Users users = (Users)request.getSession().getAttribute("users");
-		String name = users.getUname();
-		List<FrameTextSample> list = frameSample.selectFrameSamplesLastUserEditCount(name, 0, 2);
-		
+		String uname = new String(request.getParameter("uname").toString().getBytes("ISO-8859-1"), "UTF-8"); 
+		List<FrameTextSample> list = frameSample.selectFrameSamplesLastUser(uname);
+		int totalcount = list.size();
 		if(request.getParameter("pageindex") == null) {
 			pageindex = 1;
 		}else {
 			pageindex = Integer.parseInt(request.getParameter("pageindex"));
 		}
-		totalcount = list.size();
 		
 		request.setAttribute("pageindex", pageindex);
 		request.setAttribute("totalcount", totalcount);
 		request.setAttribute("list", list);
 		request.getRequestDispatcher("table.jsp").forward(request, response);
-	}
-
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

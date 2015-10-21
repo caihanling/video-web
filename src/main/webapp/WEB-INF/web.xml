@@ -38,5 +38,14 @@
 		<servlet-name>deleteDetailServlet</servlet-name>
 		<url-pattern>/pages/deleteDetailServlet</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>findBynameServlet</servlet-name>
+		<servlet-class>zx.soft.video.servlet.FindByNameServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>findBynameServlet</servlet-name>
+		<url-pattern>/pages/findBynameServlet</url-pattern>
+	</servlet-mapping>
 
 </web-app>

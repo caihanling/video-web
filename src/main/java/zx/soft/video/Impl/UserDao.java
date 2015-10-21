@@ -18,7 +18,7 @@ public class UserDao {
 			if(mapper.login(users) == null){
 				return null;
 			}else{
-				return users;
+				return mapper.login(users);
 			}
 		}
 	}

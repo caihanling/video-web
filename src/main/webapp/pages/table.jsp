@@ -1,6 +1,8 @@
+<%@page import="zx.soft.video.model.Users"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>SB Admin 2 - Bootstrap Admin Theme</title>
+<title>视频关键帧样本录入</title>
 
 <!-- Bootstrap Core CSS -->
 <link
@@ -55,6 +57,15 @@
 #side-menu li {
 	border: none;
 }
+$("tableModal").modal().css({
+                 width:'auto',
+                 'margin-left':function() {
+                  	return -($(this).width()/2);
+                  }
+             });
+            
+、、
+
 </style>
 
 
@@ -77,7 +88,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+			<a class="navbar-brand" href="servlet">视频检索库</a>
 		</div>
 		<!-- /.navbar-header -->
 
@@ -96,9 +107,9 @@
 				<i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">
-					<li><a href="#"><i class="fa fa-user fa-fw"></i> ${uname }</a></li>
+					<li><a href="#" ><i class="fa fa-user fa-fw"></i> <span id="username">${users.uname }</span></a></li>
 					<li class="divider"></li>
-					<li><a href="login.jsp"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
+					<li><a href="login.jsp"><i class="fa fa-sign-out fa-fw"></i>退出登录</a></li>
 				</ul> <!-- /.dropdown-user --></li>
 
 		</ul>
@@ -108,61 +119,96 @@
 		<div style="margin-left: 3%; margin-right: 3%">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header" style="border: none">Tables</h1>
+					<h1 class="page-header" style="border: none">视频关键帧</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
 			<!-- /.row -->
 			<div class="row">
+				<div class="col-lg-2 col-md-offset-10">
+					<div class="input-group">
+				      <input type="text" class="form-control" placeholder="查找用户已编辑的信息" id="getname">
+				      <span class="input-group-btn">
+				        <button class="btn btn-default" type="button" onclick="findByName(this)">Go!</button>
+				      </span>
+				    </div><!-- /input-group -->
+				</div>
+			</div>
+			
+			
+			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default" style="border: none">
 						<div class="panel-body">
 							<div class="dataTable_wrapper">
-
-								<table class="table table-striped table-bordered table-hover"
-									id="dataTables-example">
+								<table class="table table-striped table-bordered table-hover" >
 									<thead>
 										<tr>
-											<th width="8%">number</th>
-											<th width="20%">picture</th>
-											<th>describe</th>
-											<th width="8%">user</th>
-											<th width="14%">details</th>
+											<th width="10%"  style="text-align:center;">图片id</th>
+											<th width="15%" style="text-align:center;">图片</th>
+											<th style="text-align:center;">图片描述</th>
+											<th width="8%" style="text-align:center;">用户</th>
+											<th width="14%" style="text-align:center;">可选操作</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${list}" var="detail">
-										<c:if test="${detail.times < 4 }">
+										<c:forEach items="${list}" var="detail" begin="${10*(pageindex-1)}" end="${10*pageindex-1}">
+										<c:if test="${detail.edit_count < 3 }">
 											<tr>
-												<td align="center">${detail.did}</td>
-												<td><a id="imgClick" href="#"> <img
-														src="${detail.image}" id="imageresource" width="70px"
+												<td>${detail.id}</td>
+												<td align="center"><a id="imgClick" href="#"> <img
+														src="${detail.frame_url}" id="imageresource" width="70px"
 														height="70px" onclick="imagePreview(this)">
 												</a></td>
-												<c:if test="${detail.times==1 }">
-													<td><span style="background-color: #5cb85c">${detail.describe}</span></td>
+												<c:if test="${detail.edit_count==0 }">
+													<td><span style="background-color: #5cb85c">${detail.frame_content}</span></td>
 												</c:if>
-												<c:if test="${detail.times==2 }">
-													<td><span style="background-color: #5bc0de">${detail.describe}</span></td>
+												<c:if test="${detail.edit_count==1 }">
+													<td><span style="background-color: #C0EFFA">${detail.frame_content}</span></td>
 												</c:if>
-												<c:if test="${detail.times==3 }">
-													<td><span style="background-color: #f0ad4e">${detail.describe}</span></td>
+												<c:if test="${detail.edit_count==2 }">
+													<td><span style="background-color: #CEF6C4">${detail.frame_content}</span></td>
 												</c:if>
-												<td align="center" style="padding-top: 2%">${detail.uname}</td>
-												<td align="center" style="padding-top: 2%"><a href="#"
-													class="btn btn-info btn-xs" data-toggle="modal"
-													data-target="#basicModal" onclick="update(this);"> <span
-														class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Update
-												</a> <a href="#" class="btn btn-danger btn-xs"
-													data-toggle="modal" data-target="#deleteModal"
-													onclick="deleteObj(this);"> <span
-														class="glyphicon glyphicon-remove" aria-hidden="true"></span>delete
-												</a></td>
+												<td align="center" style="padding-top: 2%">${detail.edit_user_last}</td>
+												<td align="center" style="padding-top: 2%">
+												 	<c:if test="${fn:indexOf(detail.edit_users, users.uname) == -1 }">
+														<a href="#" class="btn btn-info btn-xs" data-toggle="modal" data-target="#basicModal" onclick="update(this);"> 
+														<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>更新</a> 
+												 	</c:if>
+												 	<c:if test="${fn:indexOf(detail.edit_users, users.uname) > 0}">
+														<a href="#" class="btn btn-info btn-xs" data-toggle="modal" data-target="#basicModal" disabled="disabled"> 
+														<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>更新</a> 
+												 	</c:if>
+													<c:if test="${users.state == '1'}">
+														<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteObj(this);"> 
+														<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除</a>
+													</c:if>
+													<c:if test="${users.state == '0'}">
+														<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal"  disabled="disabled"> 
+														<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除</a>
+													</c:if>
+												</td>
 											</tr>
 										</c:if>
 										</c:forEach>
 									</tbody>
 								</table>
+								<nav>
+								  <ul class="pager">
+								  	<c:if test="${pageindex ==1 }">
+								    <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> 上一页</a></li>
+								  	</c:if>
+								  	<c:if test="${pageindex !=1 }">
+								  	<li class="previous"><a href="servlet?pageindex=${pageindex-1}"><span aria-hidden="true">&larr;</span> 上一页</a></li>
+								  	</c:if>
+								  	<c:if test="${(10*pageindex-1) < totalcount}">
+								    <li class="next"><a href="servlet?pageindex=${pageindex+1}">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+								    </c:if>
+								    <c:if test="${(10*pageindex-1) >= totalcount}">
+								    <li class="next disabled"><a href="">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+								    </c:if>
+								  </ul>
+								</nav>
 
 							</div>
 
@@ -177,13 +223,13 @@
 								<table class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
-												<th width="30%">picture</th>
-												<th width="70%">describe</th>
+												<th width="30%">图片</th>
+												<th width="70%">描述</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td><img src="img/1.jpg" width="150px"
+												<td><img src="img/1.png" width="150px"
 													height="210px"></td>
 												<td><textarea class="form-control" rows="10" disabled="disabled">
 												第一次描述：aaaaaaaa；第二次描述：bbbbbbbbbbbb；第三次描述：ccccccccccc</textarea></td>
@@ -211,7 +257,7 @@
 								</div>
 								<div class="modal-body">
 									<div align="center">
-										<img src="" id="imagepreview" width="400px" height="300px">
+										<img src="" id="imagepreview" width="550px" height="300px">
 									</div>
 								</div>
 
@@ -234,40 +280,46 @@
 							</div>
 						</div>
 					</div>
+					
 					<!--table modal begin -->
 					<div class="modal fade" id="tableModal" tabindex="-1" role="dialog"
-						aria-labelledby="basicModal" aria-hidden="true">
+						aria-labelledby="basicModal" aria-hidden="true" >
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal"
 										aria-hidden="true">&times;</button>
-									<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+									<h4 class="modal-title" id="myModalLabel">添加描述</h4>
 								</div>
 								<div class="modal-body">
 									<table class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
-												<th width="10%">number</th>
-												<th width="20%">picture</th>
-												<th width="70%">describe</th>
+												<th width="65%">图片</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td><input type="text" id="number" class="form-control"
-													disabled="" name="did"></td>
-												<td><img src="" id="imageshow" width="70px"
-													height="70px"></td>
-												<td><textarea class="form-control" id="describe" name="describe" rows="3"></textarea>
-												</td>
+												<td><img src="" id="imageshow" width="550px" height="300px"></td>
+												
+											</tr>
+										</tbody>
+										<tr><td><input type="text" name="id" id="number" hidden></td></tr>
+										<thead>
+											<tr>
+												<th width="35%">图片描述</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><textarea class="form-control" id="describe" name="frame_content" rows="3"></textarea></td>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 								<div class="modal-footer">
-									<a href="#" class="btn btn-primary" name='save'>Ok</a> <a
-										href="#" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</a>
+									<a href="#" class="btn btn-primary" name='save'>确定</a> <a
+										href="#" class="btn" data-dismiss="modal" aria-hidden="true">取消</a>
 								</div>
 							</div>
 						</div>
@@ -313,6 +365,9 @@
 
 	<!-- Page-Level Demo Scripts - Tables - Use for reference -->
 	<script type="text/javascript">
+	
+	var page = 1;
+	
 		$(document).ready(function() {
 			$('#dataTables-example').DataTable({
 				responsive : true
@@ -320,39 +375,41 @@
 
 		});
 
-		// 		$("#imgClick").on("click", function() {
-		// 			console.log("111");
-		// 			$('#imagepreview').attr('src', $('#imageresource').attr('src'));
-		// 			$('#imagemodal').modal('show');
-		// 		});
 
+		//样例展示
 		function demo(){
 			$('#demoShow').modal('show');
 		}
 		
+		//图片预览
 		function imagePreview() {
 			$('#imagepreview').attr('src', $('#imageresource').attr('src'));
 			$('#imagemodal').modal('show');
 		}
 
+		//实时修改信息
 		function update(obj) {
 			var tds = $(obj).parent().parent().find('td');
 			$('#number').val(tds.eq(0).text());
 			$('#imageshow').attr('src', $('#imageresource').attr('src'));
-			$('#describe').val(tds.eq(2).text());
+		//	$('#describe').val(tds.eq(2).text());
 			$('#tableModal').modal('show');
+			
 
 			$("a[name='save']").click(
 					function() {
-						var did = $(this).parents("#tableModal").find("input[name='did']").val();
-						var describe = $(this).parents("#tableModal").find("textarea[name='describe']").val();
-						var uname = "<%=session.getAttribute("uname")%>";
-						window.location = "updateServlet?did=" + did + "&describe=" + describe + "&uname=" + uname;
+						var id = $(this).parents("#tableModal").find("input[name='id']").val();
+						var frame_content = $(this).parents("#tableModal").find("textarea[name='frame_content']").val();
+						<%Users user = (Users)session.getAttribute("users"); %>
+						var uname = "<%= user.getUname()%>";
+						console.log("frame_content = " +frame_content  );
+						window.location = "updateServlet?id=" + id + "&frame_content=" + frame_content + "&uname=" + uname;
 						$("#tableModal").modal("hide");
 					});
 
 		}
 
+		//删除信息
 		function deleteObj(obj) {
 			var tds = $(obj).parent().parent().find('td');
 			var did = tds.eq(0).text();
@@ -362,6 +419,13 @@
 				console.log(did);
 				window.location = "deleteDetailServlet?did=" + did;
 			});
+		}
+		
+		//根据用户名查询已经编辑过的信息
+		function findByName(obj) {
+			var uname = $('#getname').val();
+			//var uname = $('#uname').val();
+			window.location = "findBynameServlet?uname=" + uname;
 		}
 	</script>
 
